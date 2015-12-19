@@ -1,0 +1,20 @@
+ul {
+	padding:0;
+	margin:10px;
+}
+
+.active-trades, .add-book {
+	overflow: auto;
+}
+
+.book {
+	margin:10px;
+	height:240px;
+	width:280px;
+	list-style: none;
+	float:left;
+}
+
+.book-info {
+	width: 140px;
+}

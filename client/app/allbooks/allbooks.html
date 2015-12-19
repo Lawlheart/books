@@ -1,0 +1,25 @@
+<navbar></navbar>
+
+
+<main>
+	<div class="container">
+
+		<div class="active-trades">
+			<h3>Active Trades</h3>
+			<ul id="trades">
+				<li class="book" ng-repeat="trade in bookTrades">
+					<img class="book-img" src="#" ng-src="{{trade.book.image}}" alt="">
+					<div class="book-info pull-right">
+						<h4 class="book-subtitle">{{trade.book.title}}</h4>
+						<p class="book-subtitle">{{trade.book.author}}</p>
+						<p class="book-subtitle">{{trade.book.year}}</p>
+						<a class="btn btn-info" ng-click="tradeBook(trade)" ng-disabled="user._id === trade.userId" ng-show="trade.requests.indexOf(user._id) < 0">Trade</a>
+						<a href="" class="btn btn-danger" ng-click="removeTrade(trade)" ng-show="trade.requests.indexOf(user._id) >= 0">Remove Trade</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</main>
+
+<footer></footer>

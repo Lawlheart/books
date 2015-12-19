@@ -1,31 +1,29 @@
-# books
+# Book Trade
+##### by Kenneth Black
 
-This project was generated with the [Angular Full-Stack Generator](https://github.com/DaftMonk/generator-angular-fullstack) version 3.1.0.
+Book Trading App made as part of the FreeCodeCamp curriculum.
 
-## Getting Started
+##### I learned
 
-### Prerequisites
+ - JavaScript ES6 Classes
+ - 
 
-- [Git](https://git-scm.com/)
-- [Node.js and npm](nodejs.org) Node ^4.2.3, npm ^2.14.7
-- [Bower](bower.io) (`npm install --global bower`)
-- [Grunt](http://gruntjs.com/) (`npm install --global grunt-cli`)
-- [MongoDB](https://www.mongodb.org/) - Keep a running daemon with `mongod`
+##### Skills used 
 
-### Developing
+ - Babel
+ - JavaScript ES6
+ - MongoDB
+ - Mongoose
+ - AngularJS
+ - Express
+ - Node.js
 
-1. Run `npm install` to install server dependencies.
+##### User Stories
+ - As a user, I can view all books posted by every user.
+ - As a user, I can add a new book.
+ - As a user, I can update my settings to store my full name, city, and state.
+ - As a user, I can propose a trade and wait for the other user to accept the trade.
 
-2. Run `bower install` to install front-end dependencies.
+##### Notes
 
-3. Run `mongod` in a separate shell to keep an instance of the MongoDB Daemon running
-
-4. Run `grunt serve` to start the development server. It should automatically open the client in your browser when ready.
-
-## Build & development
-
-Run `grunt build` for building and `grunt serve` for preview.
-
-## Testing
-
-Running `npm test` will run the unit tests with karma.
+ - On save, save image and name data to database under trade so the API doesn't need to be queried except for adding books. volumeId is unique for searching purposes: https://www.googleapis.com/books/v1/volumes/volumeId e.x. https://www.googleapis.com/books/v1/volumes/TG5DXNXv2tAC

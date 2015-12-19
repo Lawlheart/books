@@ -6,8 +6,20 @@ class SettingsController {
   submitted = false;
   //end-non-standard
 
-  constructor(Auth) {
+  constructor($scope, Auth) {
+    $scope.getCurrentUser = Auth.getCurrentUser;
+    $scope.user = $scope.getCurrentUser();
     this.Auth = Auth;
+    $scope.updateContact = function(name, city, state) {
+      var contact = {
+        _id: $scope.user._id,
+        username: $scope.user.name,
+        fullName: name,
+        city: city,
+        state: state
+      }
+      
+    }
   }
 
   changePassword(form) {
