@@ -1,56 +1,62 @@
 <navbar></navbar>
+
+
 <main>
-	<div class="container" ng-hide="bookTrades.length === 0">
-		<!-- <pre class="pull-right">{{user | json}}</pre> -->
-		<div class="active-trades">
-			<h3>Active Offers</h3>
-			<ul id="trades">
-				<li class="book" ng-repeat="trade in bookTrades">
-					<img class="book-img" src="#" ng-src="{{trade.book.image}}" alt="">
+
+	<!--Accepted Trades-->
+	<div class="container" ng-hide="acceptedTrades.length === 0">
+		<div class="accepted-trades">
+			<h3>Accepted Offers</h3>
+			<ul id="accepted">
+				<li class="book" ng-repeat="trade in acceptedTrades">
+					<img class="book-img" src="#" ng-src="{{trade.book.image}}" alt="" ng-hide="trade.book.image === ''">
+					<div class="book-img pull-left" ng-show="trade.book.image === '' "><h3 class="text-center">No cover available</h3></div>
 					<div class="book-info pull-right">
-						<h3 class="book-subtitle">{{trade.book.title}}</h3>
-						<p class="book-subtitle">{{trade.book.author}}</p>
+						<h4 class="book-subtitle">{{trade.book.title}}</h4>
+						<p class="book-subtitle">by {{trade.book.author}}</p>
 						<p class="book-subtitle">{{trade.book.year}}</p>
-						<a href="" class="btn btn-danger" ng-click="removeBook(trade)">Remove Offer</a>
+						<a href="" class="btn btn-danger btn-bottom" ng-click="removeBook(trade)">Cancel Offer</a>
 						<button type="button" 
-										class="btn btn-success" 
+										class="btn btn-success btn-top" 
 										data-toggle="modal" 
 										data-target="#trade-info-modal" 
 										ng-click="showRequests(trade)" 
-										ng-hide="trade.requests.length < 1">Show Requests</button>
+										ng-hide="trade.requests.length < 1">Show Contact
+						</button>
 					</div>
 
 				</li>
 			</ul>
 		</div>
 	</div>
-	<!--Contact Info Modal-->
-	<div id="trade-info-modal" class="modal fade" role="dialog">
-		<div class="modal-dialog modal-box">
-			<div class="book pull-left">
-				<img class="book-img" src="#" ng-src="{{activeTrade.book.image}}" alt="">
-				<div class="book-info pull-right">
-					<h3 class="book-subtitle">{{activeTrade.book.title}}</h3>
-					<p class="book-subtitle">{{activeTrade.book.author}}</p>
-					<p class="book-subtitle">{{activeTrade.book.year}}</p>
-				</div>
-			</div>
-			<div class="book-contact pull-left">
-				<h1>Active Offers:</h1>
-				<ul id="contact-list">
-					<li class="contact well" ng-repeat="user in userData">
-						<p>Username: {{user.username}}</p>
-						<p ng-hide="user.fullName === ''">Full Name: {{user.fullName}}</p>
-						<p ng-hide="user.city === '' && user.state === ''" >Location: 
-							<span ng-hide="user.city === ''">{{user.city}}</span> 
-							<span ng-hide="user.state === '' || user.city === ''">, </span> 
-							<span ng-hide="user.state === ''">{{user.state}}</span>
-						</p>
-					</li>
-				</ul>
-			</div>
+
+	<!--Active Offers-->
+	<div class="container">
+		<div class="active-trades" ng-hide="bookTrades.length === 0">
+			<h3>Active Offers</h3>
+			<ul id="trades">
+				<li class="book" ng-repeat="trade in bookTrades">
+					<img class="book-img" src="#" ng-src="{{trade.book.image}}" alt="" ng-hide="trade.book.image === ''">
+					<div class="book-img pull-left" ng-show="trade.book.image === '' "><h3 class="text-center">No cover available</h3></div>
+					<div class="book-info pull-right">
+						<h4 class="book-subtitle">{{trade.book.title}}</h4>
+						<p class="book-subtitle">by {{trade.book.author}}</p>
+						<p class="book-subtitle">{{trade.book.year}}</p>
+						<a href="" class="btn btn-danger btn-bottom" ng-click="removeBook(trade)">Remove Offer</a>
+						<button type="button" 
+										class="btn btn-success btn-top" 
+										data-toggle="modal" 
+										data-target="#trade-info-modal" 
+										ng-click="showRequests(trade)" 
+										ng-hide="trade.requests.length < 1">Show Requests
+						</button>
+					</div>
+				</li>
+			</ul>
 		</div>
 	</div>
+
+	<!--Active Requests-->
 	<div class="container" ng-hide="bookRequests.length === 0">
 		<div class="active-requests">
 			<h3>Active Requests</h3>
@@ -58,38 +64,70 @@
 				<li class="book" ng-repeat="trade in bookRequests">
 					<img class="book-img" src="#" ng-src="{{trade.book.image}}" alt="">
 					<div class="book-info pull-right">
-						<h3 class="book-subtitle">{{trade.book.title}}</h3>
-						<p class="book-subtitle">{{trade.book.author}}</p>
+						<h4 class="book-subtitle">{{trade.book.title}}</h4>
+						<p class="book-subtitle"><i>by {{trade.book.author}}</i></p>
 						<p class="book-subtitle">{{trade.book.year}}</p>
 						<a href="" class="btn btn-danger" ng-click="removeRequest(trade)">Remove Request</a>
 					</div>
 				</li>
 			</ul>
 		</div>
-
 	</div>
+
+	<!--Add book search bar and list-->
 	<div class="container">
 		<div class="add-book">
 			<h3>Add Book</h3>
 			<input type="text" ng-model="search" id="search">
 			<button ng-click="bookSearch(search)" id="searchButton">Search</button>
-
-			
 			<ul id="books">
 				<li class="book" ng-repeat="book in books"> 
-					<img class="book-img pull-left" src="#" ng-src="{{book.volumeInfo.imageLinks.thumbnail}}" alt="">
+					<img class="book-img pull-left" src="#" ng-src="{{book.volumeInfo.imageLinks.thumbnail}}" alt="" ng-hide="!book.volumeInfo.imageLinks.thumbnail">
+				<div class="book-img pull-left" ng-show="!book.volumeInfo.imageLinks.thumbnail"><h3 class="text-center">No cover available</h3></div>
 					<div class="book-info pull-right">
-						<h3 class="book-subtitle">{{book.volumeInfo.title}}</h3>
-						<p class="book-subtitle">{{book.volumeInfo.authors.join(", ")}}</p>
+						<h4 class="book-subtitle">{{book.volumeInfo.title}}</h4>
+						<p class="book-subtitle"><i>by {{book.volumeInfo.authors.join(", ")}}</i></p>
 						<p class="book-subtitle">{{book.volumeInfo.publishedDate}}</p>
-						<a href="" class="btn btn-primary" ng-click="addBook(book)">Add Book</a>
+						<a href="" class="btn btn-primary btn-bottom" ng-click="addBook(book)">Add Offer</a>
 					</div>
 				</li>
 			</ul>
 		</div>
-
-
 	</div>
+
+
 </main>
+
+<!--Contact Info Modal-->
+<div id="trade-info-modal" class="modal fade" role="dialog">
+	<div class="modal-dialog modal-box row">
+		<div class="trade-info col-md-5 col-sm-12">
+			<h1>Book Info:</h1>
+			<img class="book-img pull-left" src="#" ng-src="{{activeTrade.book.image}}" alt="" ng-hide="activeTrade.book.image === ''">
+			<div class="book-img pull-left" ng-show="activeTrade.book.image === '' "><h3 class="text-center">No cover available</h3></div>
+			<div class="book-info pull-left">
+				<h4 class="book-subtitle">{{activeTrade.book.title}}</h4>
+				<p class="book-subtitle">by {{activeTrade.book.author}}</p>
+				<p class="book-subtitle">{{activeTrade.book.year}}</p>
+			</div>
+		</div>
+		<div class="book-contact col-md-6 col-sm-12">
+			<h1 ng-show="trade.active">Active Offers:</h1>
+			<h1 ng-show="!trade.active">Contact:</h1>
+			<ul id="contact-list">
+				<li class="contact well" ng-repeat="user in userData">
+					<p>Username: {{user.username}}</p>
+					<p ng-hide="user.fullName === ''">Full Name: {{user.fullName}}</p>
+					<p ng-hide="user.city === '' && user.state === ''" >Location: 
+						<span ng-hide="user.city === ''">{{user.city}}</span> 
+						<span ng-hide="user.state === '' || user.city === ''">, </span> 
+						<span ng-hide="user.state === ''">{{user.state}}</span>
+					</p>
+					<a class="btn btn-success trade-accept" ng-click="acceptTrade(activeTrade, user)" ng-hide="!activeTrade.active">Accept</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
 
 <footer></footer>

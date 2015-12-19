@@ -28,7 +28,6 @@ class MainController {
             state: ''
           }
           $http.post('/api/contact/', contact).success(function(data) {
-            console.log(data);
           }).error(function(err) {
             console.log(err);
           });

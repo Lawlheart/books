@@ -8,12 +8,18 @@ class MybooksCtrl {
 		$scope.getCurrentUser = Auth.getCurrentUser;
 		$scope.user = $scope.getCurrentUser();
 		$scope.addBook = function(bookData, notes) {
+			var img;
+			if(bookData.volumeInfo.imageLinks !== undefined && bookData.volumeInfo.imageLinks.thumbnail !== undefined) {
+				img = bookData.volumeInfo.imageLinks.thumbnail;
+			} else {
+				img = '';
+			}
 			var trade = {
 				user: $scope.user.name,
 				userId: $scope.user._id,
 				book: {
 					title: bookData.volumeInfo.title,
-					image: bookData.volumeInfo.imageLinks.thumbnail,
+					image: img,
 					author: bookData.volumeInfo.authors.join(", "),
 					year: bookData.volumeInfo.publishedDate,
 					volumeId: bookData.id
@@ -23,7 +29,6 @@ class MybooksCtrl {
 				active: true
 			};
 			$http.post('/api/trades/', trade).success(function(data) {
-				console.log(data);
 				$scope.bookTrades.push(data);
 			}).error(function(err) {
 				console.log(err);
@@ -35,6 +40,9 @@ class MybooksCtrl {
 				$scope.bookTrades = $scope.bookTrades.filter(function(trade, index) {
 					return trade._id !== book._id;
 				});
+				$scope.acceptedTrades = $scope.acceptedTrades.filter(function(trade, index) {
+					return trade._id !== book._id;
+				});
 			}).error(function(err) {
 				console.log(err);
 			});
@@ -42,11 +50,15 @@ class MybooksCtrl {
 		$scope.getMyBooks = function() {
 			$http.get('/api/trades/').success(function(data) {
 				$scope.bookTrades = data.filter(function(trade, index) {
-					return trade.userId === $scope.user._id;
+					return trade.userId === $scope.user._id && trade.active;
 				});
 				$scope.bookRequests = data.filter(function(trade, index) {
-					return trade.requests.indexOf($scope.user._id) >= 0;
+					return trade.requests.indexOf($scope.user._id) >= 0 && trade.active;
 				});
+				$scope.acceptedTrades = data.filter(function(trade, index) {
+					return !trade.active && (trade.userId === $scope.user._id || trade.requests.indexOf($scope.user._id) >= 0);
+				});
+
 			}).error(function(err) {
 				console.log(err);
 			});
@@ -86,7 +98,20 @@ class MybooksCtrl {
 				$scope.getUserData(requests[i]);
 			}
 		};
-		$scope.bookSearch('the name of the wind ');
+		$scope.acceptTrade = function(trade, user) {
+			console.log(trade, user);
+			trade.active = false;
+			trade.requests = trade.requests.filter(function(userId) {
+				return userId === user._id;
+			});
+			trade.requests.push($scope.user._id);
+			trade.notes = "accepted"
+			$http.patch('/api/trades/' + trade._id, trade).success(function(data) {
+				$scope.getMyBooks();
+			}).error(function(err) {
+				console.log(err);
+			})
+		};
 		$scope.getMyBooks();
 
 
