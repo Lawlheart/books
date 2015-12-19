@@ -1,7 +1,3 @@
-ul {
-	padding:0;
-	margin:10px;
-}
 
 .active-trades, .add-book {
 	overflow: auto;
@@ -17,4 +13,25 @@ ul {
 
 .book-info {
 	width: 140px;
+}
+
+.modal-box {
+	height:400px;
+	width: 80%;
+	margin:40px auto;
+	background-color: rgba(40,40,40,0.9);
+	color:#fff;
+}
+
+.modal-box .well {
+	background-color: #222;
+	border-color: #333;
+	margin-bottom: 0;
+	padding:6px;
+}
+#contact-list {
+	height:320px;
+	overflow: auto;
+	width:400px;
+
 }

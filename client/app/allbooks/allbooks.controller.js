@@ -16,6 +16,7 @@ angular.module('booksApp')
     $scope.tradeBook = function(trade) {
       trade.requests.push($scope.user._id);
       $http.patch('/api/trades/' + trade._id, trade).success(function(data) {
+        $scope.getAllBooks();
         console.log(data);
       }).error(function(err) {
         console.log(err)
@@ -26,6 +27,7 @@ angular.module('booksApp')
         return req !== $scope.user._id;
       });
       $http.patch('/api/trades/' + trade._id, trade).success(function(data) {
+        $scope.getAllBooks();
         console.log(data);
       }).error(function(err) {
         console.log(err)

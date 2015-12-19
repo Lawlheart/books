@@ -6,7 +6,7 @@ class SettingsController {
   submitted = false;
   //end-non-standard
 
-  constructor($scope, Auth) {
+  constructor($http, $scope, Auth) {
     $scope.getCurrentUser = Auth.getCurrentUser;
     $scope.user = $scope.getCurrentUser();
     this.Auth = Auth;
@@ -18,8 +18,24 @@ class SettingsController {
         city: city,
         state: state
       }
-      
+      $http.patch('/api/contact/' + $scope.user._id, contact).success(function(data) {
+        console.log(data);
+      }).error(function(err) {
+        console.log(err);
+      });
     }
+    $scope.getContactInfo = function() {
+      $http.get('/api/contact/' + $scope.user._id).success(function(contact) {
+        $scope.fullName = contact.fullName;
+        $scope.city = contact.city;
+        $scope.state = contact.state;
+        console.log(contact);
+      }).error(function(err) {
+        console.log(err);
+      });
+    }
+
+    $scope.getContactInfo();
   }
 
   changePassword(form) {

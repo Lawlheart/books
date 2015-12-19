@@ -44,7 +44,9 @@ class MybooksCtrl {
 				$scope.bookTrades = data.filter(function(trade, index) {
 					return trade.userId === $scope.user._id;
 				});
-				console.log($scope.bookTrades);
+				$scope.bookRequests = data.filter(function(trade, index) {
+					return trade.requests.indexOf($scope.user._id) >= 0;
+				});
 			}).error(function(err) {
 				console.log(err);
 			});
@@ -52,20 +54,39 @@ class MybooksCtrl {
 		$scope.bookSearch = function(query) {
 			var key = 'AIzaSyBRzQkPjF9QC05UphhctTImdgcdWWAzdEM';
 			$http.get('https://www.googleapis.com/books/v1/volumes?key=' + key + '&q=' + query + '&CALLBACK=?').success(function(data) {
-				console.log(data)
 				$scope.raw = data;
 				$scope.books = data.items;
-				console.log($scope.books[0].volumeInfo.title);
+			});
+		};
+		$scope.removeRequest = function(trade) {
+			trade.requests = trade.requests.filter(function(id) {
+				return id !== $scope.user._id;
+			})
+			$http.patch('/api/trades/' + trade._id, trade).success(function(data) {
+				console.log(data)
+				$scope.bookRequests = $scope.bookRequests.filter(function(data) {
+					return data._id !== trade._id;
+				})
+			}).error(function(err) {
+				console.log(err);
 			});
 		};
 		$scope.getUserData = function(userId) {
-
+			$http.get('/api/contact/' + userId).success(function(contact) {
+				$scope.userData.push(contact);
+			}).error(function(err) {
+				console.log(err);
+			});
 		};
-		$scope.showOffers = function(trade) {
+		$scope.showRequests = function(trade) {
+			$scope.activeTrade = trade;
 			var requests = trade.requests;
-
+			$scope.userData = []
+			for(var i=0;i<requests.length;i++) {
+				$scope.getUserData(requests[i]);
+			}
 		};
-		$scope.bookSearch('the name of the wind');
+		$scope.bookSearch('the name of the wind ');
 		$scope.getMyBooks();
 
 
